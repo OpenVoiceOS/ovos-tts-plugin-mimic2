@@ -7,7 +7,7 @@ more info in the [original PR](https://github.com/MycroftAI/mycroft-core/pull/25
 
 ## Install
 
-`mycroft-pip install mycroft-tts-plugin-catotron`
+`mycroft-pip install jarbas-tts-plugin-catotron`
 
 ## Configuration
 

@@ -2,16 +2,16 @@
 from setuptools import setup
 
 PLUGIN_ENTRY_POINT = 'catotron_tts_plug = ' \
-                     'mycroft_tts_plugin_catotron:CatotronTTSPlugin'
+                     'jarbas_tts_plugin_catotron:CatotronTTSPlugin'
 setup(
-    name='mycroft-tts-plugin-catotron',
-    version='0.1.1',
+    name='jarbas-tts-plugin-catotron',
+    version='0.1',
     description='A catalan tacotron based tts plugin for mycroft',
-    url='https://github.com/JarbasIberianLanguageResources/mycroft-tts-plugin-catotron',
+    url='https://github.com/JarbasLingua/jarbas-tts-plugin-catotron',
     author='JarbasAi',
     author_email='jarbasai@mailfence.com',
     license='Apache-2.0',
-    packages=['mycroft_tts_plugin_catotron'],
+    packages=['jarbas_tts_plugin_catotron'],
     install_requires=["requests", "pydub"],
     zip_safe=True,
     classifiers=[
