@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 from setuptools import setup
 
-PLUGIN_ENTRY_POINT = 'catotron_tts_plug = ' \
-                     'jarbas_tts_plugin_catotron:CatotronTTSPlugin'
+PLUGIN_ENTRY_POINT = 'ovos_tts_mimic2 = ' \
+                     'ovos_tts_plugin_mimic2:Mimic2TTSPlugin'
 setup(
-    name='jarbas-tts-plugin-catotron',
+    name='ovos-tts-plugin-mimic2',
     version='0.1',
-    description='A catalan tacotron based tts plugin for mycroft',
-    url='https://github.com/JarbasLingua/jarbas-tts-plugin-catotron',
+    description='Mimic2 (tacotron based tts) plugin for OpenVoiceOS',
+    url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2',
     author='JarbasAi',
     author_email='jarbasai@mailfence.com',
     license='Apache-2.0',
-    packages=['jarbas_tts_plugin_catotron'],
-    install_requires=["requests", "pydub"],
+    packages=['ovos_tts_plugin_mimic2'],
+    install_requires=["requests", "ovos-plugin-manager>=0.0.1a3"],
     zip_safe=True,
     classifiers=[
         'Development Status :: 3 - Alpha',

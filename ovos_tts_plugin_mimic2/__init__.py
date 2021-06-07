@@ -10,43 +10,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from mycroft.tts import TTS, TTSValidator
+from ovos_plugin_manager.templates.tts import TTS, TTSValidator
 import requests
-from pydub import AudioSegment
-from os.path import join, isfile, isdir
-from os import makedirs
+from ovos_utils.lang.visimes import VISIMES
 import re
 import math
-from tempfile import gettempdir
-from hashlib import sha512
+import base64
 
 
-class CatotronTTSPlugin(TTS):
+class Mimic2TTSPlugin(TTS):
     """Interface to Catotron TTS."""
     # Heuristic value, caps character length of a chunk of text
-    # to be spoken as a work around for current Catotron implementation limits.
-    max_sentence_size = 150
+    # to be spoken as a work around for current Tacotron implementation limits.
+    max_sentence_size = 170
 
-    def __init__(self, lang="es-ca", config=None):
-        super(CatotronTTSPlugin, self).__init__(
-            lang, config, CatotronTTSValidator(self), 'wav')
-        self.url = config.get("url",
-                              "http://catotron.collectivat.cat/synthesize")
-        # max size for catotron is 150 chars, sentences will be split at
-        # punctuation and merged again, this value defines the silence
-        # between merging sound files
-        self.pause_between_chunks = config.get("pause_between_chunks", 0.6)
-        # cache is used to speed up repeated synths and save api calls
-        self.cache = config.get("cache_dir") or join(gettempdir(), "catotron")
-        self.cache_enabled = config.get("cache_enabled", True)
-        if not self.cache_enabled:
-            # used only for intermediate files
-            self.cache = join(gettempdir(), "catotron")
-        if not isdir(self.cache):
-            makedirs(self.cache)
+    def __init__(self, lang="en-us", config=None):
+        config = config or {}
+        super(Mimic2TTSPlugin, self).__init__(lang, config,
+                                              Mimic2TTSValidator(self), 'wav')
+        self.url = config.get("url", "https://mimic-api.mycroft.ai/synthesize")
 
     def get_tts(self, sentence, wav_file):
-        """Fetch tts audio using Catotron endpoint.
+        """Fetch tts audio using tacotron endpoint.
 
         Arguments:
             sentence (str): Sentence to generate audio for
@@ -54,40 +39,42 @@ class CatotronTTSPlugin(TTS):
         Returns:
             Tuple ((str) written file, None)
         """
-        cached_file = self._get_unique_file_path(sentence)
-        if isfile(cached_file) and self.cache_enabled:
-            with open(cached_file, "rb") as f:
-                audio_data = f.read()
-            with open(wav_file, "wb") as f:
-                f.write(audio_data)
-        else:
-            if len(sentence) > self.max_sentence_size:
-                return self._get_tts_chunked(sentence, wav_file)
-            params = {"text": sentence}
-            audio_data = requests.get(self.url, params=params).content
-            with open(wav_file, "wb") as f:
-                f.write(audio_data)
-            if self.cache_enabled:
-                with open(cached_file, "wb") as f:
-                    f.write(audio_data)
-        return (wav_file, None)  # No phonemes
+        params = {"text": sentence, "visimes": True}
+        results = requests.get(self.url, params=params).json()
+        audio_data = base64.b64decode(results['audio_base64'])
+        phonemes = results['visimes']
+        with open(wav_file, "wb") as f:
+            f.write(audio_data)
+        return (wav_file, phonemes)  # No phonemes
 
-    # bellow are helpers to split sentence in chunks that catotron can synth
+    def viseme(self, phonemes):
+        """Maps phonemes to appropriate viseme encoding
+
+        Arguments:
+            phonemes (list): list of tuples (phoneme, time_start)
+
+        Returns:
+            list: list of tuples (viseme_encoding, time_start)
+        """
+        visemes = []
+        for pair in phonemes:
+            if pair[0]:
+                phone = pair[0].lower()
+            else:
+                # if phoneme doesn't exist use
+                # this as placeholder since it
+                # is the most common one "3"
+                phone = 'z'
+            vis = VISIMES.get(phone)
+            vis_dur = float(pair[1])
+            visemes.append((vis, vis_dur))
+        return visemes
+
+    # below are helpers to split sentence in chunks that tacotron can synth
     # there is a limit for 150 chars
-    def _get_tts_chunked(self, sentence, wav_file):
-        combined = AudioSegment.empty()
-        silence = AudioSegment.silent(duration=self.pause_between_chunks)
-        for splitted in self._split_sentences(sentence):
-            partial_file = self._get_unique_file_path(splitted)
-            if not isfile(partial_file):
-                partial_file, _ = self.get_tts(splitted, partial_file)
-            combined += silence + AudioSegment.from_wav(partial_file)
-        combined.export(wav_file, format="wav")
-        return (wav_file, None)  # No phonemes
-
-    def _get_unique_file_path(self, sentence):
-        file_name = sha512(sentence.encode('utf-8')).hexdigest()
-        return join(self.cache, file_name) + ".wav"
+    def _preprocess_sentence(self, sentence):
+        """Split sentence in chunks better suited for mimic2. """
+        return self._split_sentences(sentence)
 
     @staticmethod
     def _split_sentences(text):
@@ -101,11 +88,11 @@ class CatotronTTSPlugin(TTS):
         Returns:
             list: list of text chunks
         """
-        if len(text) <= CatotronTTSPlugin.max_sentence_size:
-            return [CatotronTTSPlugin._add_punctuation(text)]
+        if len(text) <= Mimic2TTSPlugin.max_sentence_size:
+            return [Mimic2TTSPlugin._add_punctuation(text)]
 
         # first split by punctuations that are major pauses
-        first_splits = CatotronTTSPlugin._split_by_punctuation(
+        first_splits = Mimic2TTSPlugin._split_by_punctuation(
             text,
             puncs=[r'\.', r'\!', r'\?', r'\:', r'\;']
         )
@@ -113,8 +100,8 @@ class CatotronTTSPlugin(TTS):
         # if chunks are too big, split by minor pauses (comma, hyphen)
         second_splits = []
         for chunk in first_splits:
-            if len(chunk) > CatotronTTSPlugin.max_sentence_size:
-                second_splits += CatotronTTSPlugin._split_by_punctuation(
+            if len(chunk) > Mimic2TTSPlugin.max_sentence_size:
+                second_splits += Mimic2TTSPlugin._split_by_punctuation(
                     chunk, puncs=[r'\,', '--', '-'])
             else:
                 second_splits.append(chunk)
@@ -122,13 +109,13 @@ class CatotronTTSPlugin(TTS):
         # if chunks are still too big, chop into pieces of at most 20 words
         third_splits = []
         for chunk in second_splits:
-            if len(chunk) > CatotronTTSPlugin.max_sentence_size:
-                third_splits += CatotronTTSPlugin._split_by_chunk_size(
+            if len(chunk) > Mimic2TTSPlugin.max_sentence_size:
+                third_splits += Mimic2TTSPlugin._split_by_chunk_size(
                     chunk, 20)
             else:
                 third_splits.append(chunk)
 
-        return [CatotronTTSPlugin._add_punctuation(chunk)
+        return [Mimic2TTSPlugin._add_punctuation(chunk)
                 for chunk in third_splits]
 
     @staticmethod
@@ -156,22 +143,22 @@ class CatotronTTSPlugin(TTS):
             return [text]
 
         if chunk_size < len(text_list) < (chunk_size * 2):
-            return list(CatotronTTSPlugin._break_chunks(
+            return list(Mimic2TTSPlugin._break_chunks(
                 text_list,
                 int(math.ceil(len(text_list) / 2))
             ))
         elif (chunk_size * 2) < len(text_list) < (chunk_size * 3):
-            return list(CatotronTTSPlugin._break_chunks(
+            return list(Mimic2TTSPlugin._break_chunks(
                 text_list,
                 int(math.ceil(len(text_list) / 3))
             ))
         elif (chunk_size * 3) < len(text_list) < (chunk_size * 4):
-            return list(CatotronTTSPlugin._break_chunks(
+            return list(Mimic2TTSPlugin._break_chunks(
                 text_list,
                 int(math.ceil(len(text_list) / 4))
             ))
         else:
-            return list(CatotronTTSPlugin._break_chunks(
+            return list(Mimic2TTSPlugin._break_chunks(
                 text_list,
                 int(math.ceil(len(text_list) / 5))
             ))
@@ -213,17 +200,17 @@ class CatotronTTSPlugin(TTS):
             return text
 
 
-class CatotronTTSValidator(TTSValidator):
+class Mimic2TTSValidator(TTSValidator):
     def __init__(self, tts):
-        super(CatotronTTSValidator, self).__init__(tts)
+        super(Mimic2TTSValidator, self).__init__(tts)
 
     def validate_lang(self):
         lang = self.tts.lang.lower()
-        assert lang in ["ca", "ca-es", "es-ca"]
+        assert lang.startswith("en")
 
     def validate_connection(self):
         base_url = self.tts.url.replace("/synthesize", "")
         assert requests.get(base_url).status_code == 200
 
     def get_tts_class(self):
-        return CatotronTTSPlugin
+        return Mimic2TTSPlugin
