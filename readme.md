@@ -10,7 +10,7 @@ OVOS TTS plugin for [Mimic2](https://github.com/MycroftAI/mimic2)
 
 ```json
   "tts": {
-    "module": "ovos_tts_mimic2"
+    "module": "ovos-tts-plugin-mimic2"
   }
  
 ```

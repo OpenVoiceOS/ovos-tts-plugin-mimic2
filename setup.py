@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 from setuptools import setup
 
-PLUGIN_ENTRY_POINT = 'ovos_tts_mimic2 = ' \
+PLUGIN_ENTRY_POINT = 'ovos-tts-plugin-mimic2 = ' \
                      'ovos_tts_plugin_mimic2:Mimic2TTSPlugin'
 setup(
     name='ovos-tts-plugin-mimic2',
-    version='0.1',
+    version='0.1.1',
     description='Mimic2 (tacotron based tts) plugin for OpenVoiceOS',
     url='https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2',
     author='JarbasAi',
     author_email='jarbasai@mailfence.com',
     license='Apache-2.0',
     packages=['ovos_tts_plugin_mimic2'],
-    install_requires=["requests", "ovos-plugin-manager>=0.0.1a3"],
+    install_requires=["requests", "ovos-plugin-manager>=0.0.1a7"],
     zip_safe=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -31,6 +31,6 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='mycroft plugin tts',
+    keywords='mycroft ovos plugin tts',
     entry_points={'mycroft.plugin.tts': PLUGIN_ENTRY_POINT}
 )
