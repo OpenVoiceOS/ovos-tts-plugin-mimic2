@@ -30,7 +30,7 @@ class Mimic2TTSPlugin(TTS):
                                               Mimic2TTSValidator(self), 'wav')
         self.url = config.get("url", "https://mimic-api.mycroft.ai/synthesize")
 
-    def get_tts(self, sentence, wav_file):
+    def get_tts(self, sentence, wav_file, lang=None):
         """Fetch tts audio using tacotron endpoint.
 
         Arguments:
