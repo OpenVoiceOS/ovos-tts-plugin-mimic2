@@ -209,8 +209,7 @@ class Mimic2TTSValidator(TTSValidator):
         assert lang.startswith("en")
 
     def validate_connection(self):
-        base_url = self.tts.url.replace("/synthesize", "")
-        assert requests.get(base_url).status_code == 200
+        pass
 
     def get_tts_class(self):
         return Mimic2TTSPlugin
