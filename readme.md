@@ -1,6 +1,6 @@
 ## Description
-OVOS TTS plugin for [Mimic2](https://github.com/MycroftAI/mimic2)
 
+OVOS TTS plugin for [Mimic2](https://github.com/MycroftAI/mimic2)
 
 ## Install
 

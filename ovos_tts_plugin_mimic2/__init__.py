@@ -10,12 +10,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from ovos_plugin_manager.templates.tts import TTS, TTSValidator
-import requests
-from ovos_utils.lang.visimes import VISIMES
-import re
-import math
 import base64
+import math
+import re
+
+import requests
+
+from ovos_plugin_manager.templates.tts import TTS, TTSValidator, RemoteTTSException
+from ovos_utils.lang.visimes import VISIMES
 
 
 class Mimic2TTSPlugin(TTS):
@@ -40,7 +42,10 @@ class Mimic2TTSPlugin(TTS):
             Tuple ((str) written file, None)
         """
         params = {"text": sentence, "visimes": True}
-        results = requests.get(self.url, params=params).json()
+        r = requests.get(self.url, params=params)
+        if not r.ok:
+            raise RemoteTTSException(f"Mimic2 server error: {r.reason}")
+        results = r.json()
         audio_data = base64.b64decode(results['audio_base64'])
         phonemes = results['visimes']
         with open(wav_file, "wb") as f:
