@@ -4,7 +4,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mimic2-nancy
+  IMAGE_NAME: OpenVoiceOS/mimic2-nancy
 
 jobs:
   build_and_publish_docker:
