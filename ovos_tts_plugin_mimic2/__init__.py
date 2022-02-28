@@ -12,6 +12,7 @@
 #
 import base64
 import math
+import random
 import re
 
 import requests
@@ -21,7 +22,7 @@ from ovos_utils.lang.visimes import VISIMES
 
 
 class Mimic2TTSPlugin(TTS):
-    """Interface to Catotron TTS."""
+    """Interface to Mimic2 TTS."""
     # Heuristic value, caps character length of a chunk of text
     # to be spoken as a work around for current Tacotron implementation limits.
     max_sentence_size = 170
@@ -30,7 +31,25 @@ class Mimic2TTSPlugin(TTS):
         config = config or {}
         super(Mimic2TTSPlugin, self).__init__(lang, config,
                                               Mimic2TTSValidator(self), 'wav')
-        self.url = config.get("url", "https://mimic-api.mycroft.ai/synthesize")
+        self.voice = self.voice.lower()
+        self._visemes = False
+        self.cache.persist = True  # save synths to avoid repeat queries
+        if self.config.get("url"):  # self hosted
+            self.url = self.config["url"]
+            # TODO disable cache to avoid filename conflicts with other voices
+            if not self.voice or self.voice == "default":
+                self.voice = f"selfhosted{random.randint(0, 9999999)}"
+                self.cache.persist = False
+        elif self.voice == "kusal" or self.voice == "default":
+            self.url = "https://mimic-api.mycroft.ai/synthesize"
+            self._visemes = True
+        elif self.voice == "nancy":
+            self.url = "https://nancy.2022.us/synthesize"
+        elif self.voice == "ljspeech":
+            self.url = "https://ljspeech.2022.us/synthesize"
+        else:
+            self.voice = "kusal"
+            self.url = "https://mimic-api.mycroft.ai/synthesize"
 
     def get_tts(self, sentence, wav_file, lang=None):
         """Fetch tts audio using tacotron endpoint.
@@ -41,13 +60,17 @@ class Mimic2TTSPlugin(TTS):
         Returns:
             Tuple ((str) written file, None)
         """
-        params = {"text": sentence, "visimes": True}
+        params = {"text": sentence, "visimes": self._visemes}
         r = requests.get(self.url, params=params)
         if not r.ok:
             raise RemoteTTSException(f"Mimic2 server error: {r.reason}")
-        results = r.json()
-        audio_data = base64.b64decode(results['audio_base64'])
-        phonemes = results['visimes']
+        if not self._visemes:
+            audio_data = r.content
+            phonemes = None
+        else:
+            results = r.json()
+            audio_data = base64.b64decode(results['audio_base64'])
+            phonemes = results['visimes']
         with open(wav_file, "wb") as f:
             f.write(audio_data)
         return (wav_file, phonemes)  # No phonemes
