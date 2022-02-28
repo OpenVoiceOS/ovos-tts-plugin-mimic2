@@ -2,7 +2,19 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.4a1...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.4a2...HEAD)
+
+**Implemented enhancements:**
+
+- Feat/voice selection [\#6](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/pull/6) ([JarbasAl](https://github.com/JarbasAl))
+
+**Merged pull requests:**
+
+- Add docker workflows [\#5](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/pull/5) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.1.4a2](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/V0.1.4a2) (2022-02-28)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.4a1...V0.1.4a2)
 
 **Implemented enhancements:**
 
