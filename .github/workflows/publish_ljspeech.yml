@@ -4,7 +4,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mimic2-nancy
+  IMAGE_NAME: mimic2-ljspeech
 
 jobs:
   build_and_publish_docker:
