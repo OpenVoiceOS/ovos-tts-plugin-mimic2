@@ -1,4 +1,4 @@
-name: Publish Nancy Voice Container
+name: Publish LJSpeech Voice Container
 on:
   workflow_dispatch:
 
