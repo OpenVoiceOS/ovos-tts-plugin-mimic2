@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/06f6a8aa6037ede0ae685c4ca0477fd5a6f6cba7...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.4a1...HEAD)
+
+**Implemented enhancements:**
+
+- Add female voices [\#4](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/pull/4) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.1.4a1](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/V0.1.4a1) (2022-02-28)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/06f6a8aa6037ede0ae685c4ca0477fd5a6f6cba7...V0.1.4a1)
 
 **Merged pull requests:**
 
