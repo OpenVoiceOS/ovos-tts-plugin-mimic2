@@ -18,12 +18,10 @@ OVOS TTS plugin for [Mimic2](https://github.com/MycroftAI/mimic2)
  
 ```
 
-### Voices
-
 Available Voices:
-- Kusal - Mycroft AI official voice, hosted by Mycroft
-- Nancy - trained on [Nancy Corpus](http://www.cstr.ed.ac.uk/projects/blizzard/2011/lessac_blizzard2011/) by [@MXGray](https://github.com/MXGray, hosted by Neon
-- ljspeech - trained on [LJ-Speech-Dataset](https://keithito.com/LJ-Speech-Dataset) by [keithito](https://github.com/keithito/tacotron), hosted by Neon
+- `kusal` - Mycroft AI official voice, hosted at https://mimic-api.mycroft.ai
+- `nancy` - trained on [Nancy Corpus](http://www.cstr.ed.ac.uk/projects/blizzard/2011/lessac_blizzard2011/) by [@MXGray](https://github.com/MXGray), hosted at https://nancy.2022.us
+- `ljspeech` - trained on [LJ-Speech-Dataset](https://keithito.com/LJ-Speech-Dataset) by [keithito](https://github.com/keithito/tacotron), hosted at https://ljspeech.2022.us
 
 ### Self Hosting
 
