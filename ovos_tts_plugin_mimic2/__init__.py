@@ -33,7 +33,6 @@ class Mimic2TTSPlugin(TTS):
                                               Mimic2TTSValidator(self), 'wav')
         self.voice = self.voice.lower()
         self._visemes = False
-        self.cache.persist = True  # save synths to avoid repeat queries
         if self.config.get("url"):  # self hosted
             self.url = self.config["url"]
             # TODO disable cache to avoid filename conflicts with other voices
@@ -45,8 +44,10 @@ class Mimic2TTSPlugin(TTS):
             self._visemes = True
         elif self.voice == "nancy":
             self.url = "https://nancy.2022.us/synthesize"
+            self.cache.persist = True  # always save synths to persistent cache
         elif self.voice == "ljspeech":
             self.url = "https://ljspeech.2022.us/synthesize"
+            self.cache.persist = True  # always save synths to persistent cache
         else:
             self.voice = "kusal"
             self.url = "https://mimic-api.mycroft.ai/synthesize"
