@@ -242,3 +242,12 @@ class Mimic2TTSValidator(TTSValidator):
 
     def get_tts_class(self):
         return Mimic2TTSPlugin
+
+
+Mimic2TTSPluginConfig = {
+    "en-us": [
+        {"voice": "kusal", "gender": "male"},
+        {"voice": "nancy", "gender": "female"},
+        {"voice": "ljspeech", "gender": "female"}
+    ]
+}
