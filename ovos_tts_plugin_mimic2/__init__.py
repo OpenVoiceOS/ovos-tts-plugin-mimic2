@@ -99,6 +99,16 @@ class Mimic2TTSPlugin(TTS):
             visemes.append((vis, vis_dur))
         return visemes
 
+    @property
+    def available_languages(self) -> set:
+        """Return languages supported by this TTS implementation in this state
+        This property should be overridden by the derived class to advertise
+        what languages that engine supports.
+        Returns:
+            set: supported languages
+        """
+        return set(Mimic2TTSPluginConfig.keys())
+
     # below are helpers to split sentence in chunks that tacotron can synth
     # there is a limit for 150 chars
     def _preprocess_sentence(self, sentence):
@@ -246,8 +256,8 @@ class Mimic2TTSValidator(TTSValidator):
 
 Mimic2TTSPluginConfig = {
     "en-us": [
-        {"voice": "kusal", "gender": "male"},
-        {"voice": "nancy", "gender": "female"},
-        {"voice": "ljspeech", "gender": "female"}
+        {"voice": "kusal", "gender": "male", "display_name": "Kusal"},
+        {"voice": "nancy", "gender": "female", "display_name": "Nancy"},
+        {"voice": "ljspeech", "gender": "female", "display_name": "LJSpeech"}
     ]
 }
