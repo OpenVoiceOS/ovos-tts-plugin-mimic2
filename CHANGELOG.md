@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.5...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a1...HEAD)
+
+**Implemented enhancements:**
+
+- feat/available\_languages [\#9](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/pull/9) ([NeonJarbas](https://github.com/NeonJarbas))
+
+## [V0.1.6a1](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/V0.1.6a1) (2022-07-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.5...V0.1.6a1)
 
 **Implemented enhancements:**
 
