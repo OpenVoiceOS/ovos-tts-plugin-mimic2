@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a1...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a2...HEAD)
+
+**Merged pull requests:**
+
+- add "offline" metadata key [\#10](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/pull/10) ([NeonJarbas](https://github.com/NeonJarbas))
+
+## [V0.1.6a2](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/V0.1.6a2) (2022-08-02)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a1...V0.1.6a2)
 
 **Implemented enhancements:**
 
