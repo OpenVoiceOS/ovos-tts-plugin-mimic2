@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/HEAD)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a4...HEAD)
+
+**Merged pull requests:**
+
+- fix config error [\#11](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/pull/11) ([AIIX](https://github.com/AIIX))
+
+## [V0.1.6a4](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/V0.1.6a4) (2022-10-18)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a3...V0.1.6a4)
+
 ## [V0.1.6a3](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/tree/V0.1.6a3) (2022-08-02)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-mimic2/compare/V0.1.6a2...V0.1.6a3)
