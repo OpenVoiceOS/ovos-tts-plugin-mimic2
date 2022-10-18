@@ -258,6 +258,6 @@ Mimic2TTSPluginConfig = {
     "en-us": [
         {"voice": "kusal", "gender": "male", "display_name": "Kusal", "offline": False, "priority": 45},
         {"voice": "nancy", "gender": "female", "display_name": "Nancy", "offline": False, "priority": 90},
-        {"voice": "ljspeech", "gender": "female", "display_name": "LJSpeech", "offline": Fals, "priority": 90}
+        {"voice": "ljspeech", "gender": "female", "display_name": "LJSpeech", "offline": False, "priority": 90}
     ]
 }
